@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { Appbar } from "../components/Appbar"
 import axios from 'axios'
-import {CreateBlogInput} from 'random_boy-medium-common'
 import { useNavigate } from "react-router-dom"
 
 
