@@ -15,7 +15,7 @@ export const FullBlog = ({blog}: {blog:FullBlogType}) => {
         <div>
             <Appbar></Appbar>
             <div className="flex flex-row justify-around">
-                <div className="flex flex-col ml-10">
+                <div className="flex flex-col ml-10 max-w-screen-sm">
                     <div className="mt-10 text-5xl font-bold"> 
                         {blog.title}
                     </div>
