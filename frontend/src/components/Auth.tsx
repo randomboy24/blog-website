@@ -14,7 +14,7 @@ export const Auth = ({type} : {type: "signin" | "signup"}) => {
     async function sendRequest() {
         try {
             const response = await axios.post(`https://medium.jatinthegod212.workers.dev/api/v1/user/${type}`,postInputes)
-            const jwt = response.data;
+            const jwt = response.data.jwt;
             localStorage.setItem("token",jwt);
             navigate('/blogs');
         } catch(e) {
