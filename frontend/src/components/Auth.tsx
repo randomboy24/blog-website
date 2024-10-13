@@ -16,6 +16,8 @@ export const Auth = ({type} : {type: "signin" | "signup"}) => {
             const response = await axios.post(`https://medium.jatinthegod212.workers.dev/api/v1/user/${type}`,postInputes)
             const jwt = response.data.jwt;
             localStorage.setItem("token",jwt);
+            const userDetails = await axios.get(`http://localhost:8787/api/v1/user/${postInputes.username}`)
+            console.log(userDetails)
             navigate('/blogs');
         } catch(e) {
             // alert the user here that the request failed

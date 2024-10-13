@@ -3,8 +3,16 @@ import { BlogCard } from '../components/blogCard'
 import { Appbar } from '../components/Appbar'
 import { useBlogs } from '../hooks'
 import { Loader } from '../components/Loader'
+import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
 
 export const Blogs = () => {
+    const navigate = useNavigate();
+    useEffect(() => {
+        if(!localStorage.getItem("token")){
+            navigate("/signup")
+        }
+    })
     const {loading,blogs} = useBlogs()
     if(loading){
         return(

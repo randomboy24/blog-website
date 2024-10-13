@@ -1,10 +1,17 @@
+import { useEffect } from "react";
 import { FullBlog } from "../components/FullBlog";
 import { Loader } from "../components/Loader";
 import { useBlog } from "../hooks"
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 
 export const Blog = () => {
+    const navigate = useNavigate();
+    useEffect(() => {
+        if(!localStorage.getItem("token")){
+            navigate("/signup")
+        }
+    })
     const { id } = useParams()
     const {loading,blog} = useBlog({
         id: id || " "

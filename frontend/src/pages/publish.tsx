@@ -1,13 +1,18 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Appbar } from "../components/Appbar"
 import axios from 'axios'
 import { useNavigate } from "react-router-dom"
 
 
 export const Publish = () => {
+    const navigate = useNavigate();
+    useEffect(() => {
+        if(!localStorage.getItem("token")){
+            navigate("/signup")
+        }
+    })
     const [title,setTitle] = useState<string>('');
     const [content,setContent] = useState<string>('');
-    const navigate = useNavigate()
 
     async function createBlog() {
         const response = await axios.post('https://medium.jatinthegod212.workers.dev/api/v1/blog',{
