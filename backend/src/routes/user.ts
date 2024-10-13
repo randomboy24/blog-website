@@ -12,6 +12,9 @@ export const userRouter = new Hono<{
 }>();
 
 userRouter.post('/signup',async (c) => {
+    // return c.json({
+    //   message:"error occured whie bla bla "
+    // })
 
     const body = await c.req.json()
 
@@ -27,18 +30,24 @@ userRouter.post('/signup',async (c) => {
       })
     }
     //add zod and hash the passwords
-    const userExists = await prisma.user.findUnique({
-      where : {
-        username:body.username
-      }
-    })
-    
-    if(userExists){
-      return c.json({
-        message:"user already exists"
+    try{
+      const userExists = await prisma.user.findUnique({
+        where : {
+          username:body.username
+        }
       })
+      if(userExists){
+        return c.json({
+          message:"user already exists"
+        })
+      }
     }
-    console.log(userExists)
+    catch(e){
+      console.log("Database error: "+e)
+      return c.text("error occured during a db call")
+    }
+    
+    // console.log(userExists)
     try{
       const res = await prisma.user.create({
         data: {
@@ -75,25 +84,29 @@ userRouter.post('/signup',async (c) => {
   
   
     //add zod and hash the passwords
-    const userExists = await prisma.user.findUnique({
-      where : {
-        username:body.username,
-        password:body.password
-      }
-    })
+    try{
 
-    console.log(userExists)
-  
-    if(!userExists){
-      return c.json({
-        message:"user doesn't exists"
+      const userExists = await prisma.user.findUnique({
+        where : {
+          username:body.username,
+          password:body.password
+        }
       })
+      if(!userExists){
+        return c.json({
+          message:"user doesn't exists"
+        })
+      }
+      else{
+        const token = await sign({id:userExists.id},c.env.JWT_SECRET)
+        
+        return c.json({
+          jwt:token
+        })
+      }
     }
-    else{
-      const token = await sign({id:userExists.id},c.env.JWT_SECRET)
-      
-      return c.json({
-        jwt:token
-      })
+    catch(e){
+      console.log("Database error: "+e)
+      return c.text("Error occured during a db call")
     }
   })
