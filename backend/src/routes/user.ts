@@ -98,7 +98,7 @@ userRouter.post('/signup',async (c) => {
         })
       }
       else{
-        const token = await sign({id:userExists.id},c.env.JWT_SECRET)
+        const token = await sign({id:userExists.id,username:userExists.username},c.env.JWT_SECRET)
         
         return c.json({
           jwt:token
@@ -111,23 +111,27 @@ userRouter.post('/signup',async (c) => {
     }
   })
 
-  userRouter.get('/:username',async (c) => {
-    const username = c.req.param("username")
-    const prisma = new PrismaClient({
-      datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate())
+  // userRouter.get('/:username',async (c) => {
+  //   const username = c.req.param("username")
+  //   const prisma = new PrismaClient({
+  //     datasourceUrl: c.env.DATABASE_URL,
+  //   }).$extends(withAccelerate())
 
-    const userDetails = await prisma.user.findUnique({
-      where:{
-        username:username
-      }
-    })
-    if(!userDetails){
-      return c.json({
-        message:"user doesn't exists"
-      })
-    }
-    return c.json({
-      userDetails:userDetails
-    })
-  })
+  //   const userDetails = await prisma.user.findFirst({
+  //     data:{
+  //       name,
+        
+  //     },
+  //     where:{
+  //       username:username
+  //     }
+  //   })
+  //   if(!userDetails){
+  //     return c.json({
+  //       message:"user doesn't exists"
+  //     })
+  //   }
+  //   return c.json({
+  //     userDetails:userDetails
+  //   })
+  // })
